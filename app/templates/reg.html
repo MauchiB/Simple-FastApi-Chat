@@ -1,0 +1,64 @@
+{% extends  'index.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/login.css">
+<div class="mydiv">
+<div class="wrapper">
+    <header>Login Form</header>
+    <form action="#">
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" placeholder="Username" id="username-id"  required>
+          <i class="icon fas fa-envelope"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        
+        <div class="input-area">
+            <input type="email" placeholder="Email" id="email-id"  required>
+            <i class="icon fas fa-envelope"></i>
+            <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" placeholder="Password" id="password-id"  required>
+          <i class="icon fas fa-lock"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Password can't be blank</div>
+      </div>
+      <div class="pass-txt"><a href="">Forgot password?</a></div>
+      <input type="submit" value="Login" id="input-id"  required>
+    </form>
+    <div class="sign-txt">member? <a href="{{ request.url_for('LoginForm') }}">Sign in</a></div>
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const form = document.getElementById('input-id')
+        form.addEventListener('click', (event) => {
+            const username = document.getElementById('username-id')
+            const email = document.getElementById('email-id')
+            const password = document.getElementById('password-id')
+            let query = fetch('/auth/reg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'username':username.value,
+                                      'email':email.value,
+                                      'hash_password':password.value})
+            })
+            .then((response) => {
+                if (response.ok) {
+                  window.location.href = '/login'
+                } else {
+                  alert('User is already register')
+                }
+            })
+
+
+        })
+    })
+</script>
+{% endblock %}

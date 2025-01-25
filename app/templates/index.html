@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+</head>
+<body>
+    <link rel="stylesheet" href="/static/index.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', e => {
+            const logout = document.getElementById('melogout')
+            logout.addEventListener('clicl', e => {
+                window.location.href = '/'
+            })
+        })
+  
+    </script>
+
+    <nav class="navbar navbar-expand-custom navbar-mainbg">
+        <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('index') }}"><i class="fas fa-tachometer-alt"></i>MachiWeb</a>
+                </li>
+                {% if request.cookies.get('token') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('chat') }}"><i class="far fa-address-book"></i>Your chats</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('chat_list_global') }}"><i class="far fa-address-book"></i>List chats</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('chat_create') }}"><i class="far fa-address-book"></i>Create room chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);"><i class="far fa-clone"></i>Posts</a>
+                </li>
+                {% endif %}
+                {% if not request.cookies.get('token') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('LoginForm') }}"><i class="far fa-calendar-alt"></i>Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('reg') }}"><i class="far fa-chart-bar"></i>Regestration</a>
+                </li>
+                {% endif %}
+                {% if request.cookies.get('token') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ request.url_for('logout') }}"  id="melogout"><i class="far fa-copy"></i>Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+ 
+    {% block content %}
+    {% endblock %}
+    
+    
+</body>
+</html>

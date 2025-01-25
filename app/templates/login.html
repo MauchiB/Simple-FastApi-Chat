@@ -1,0 +1,63 @@
+{% extends  'index.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/login.css">
+<div class="mydiv">
+<div class="wrapper">
+    <header>Login Form</header>
+    <form action="#">
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" placeholder="Username" id="username-id" required>
+          <i class="icon fas fa-envelope"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" placeholder="Password" id="password-id" required>
+          <i class="icon fas fa-lock"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Password can't be blank</div>
+      </div>
+      <div class="pass-txt"><a href="#">Forgot password?</a></div>
+      <input type="submit" value="Login" id="input-id">
+    </form>
+    <div class="sign-txt">Not yet member? <a href="{{ request.url_for('reg') }}">Signup now</a></div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('input-id')
+        form.addEventListener('click', (event) => {
+          event.preventDefault()
+            const username = document.getElementById('username-id')
+            const password = document.getElementById('password-id')
+            let query = fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'username':username.value,
+                                      'password':password.value})
+            })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.href = '/'
+                    alert('You sign in !')
+                } else {
+                    throw new Error(response.status)
+                }
+            })
+            .catch((error) => {
+                alert(error + ' User is not found')
+            })
+
+
+        })
+    })
+    
+</script>
+{% endblock %}

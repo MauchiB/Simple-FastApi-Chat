@@ -1,0 +1,61 @@
+{% extends  'index.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="/static/chat.css">
+
+<style>
+
+
+a {
+    color: white; /* Цвет по умолчанию */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:focus {
+    color: skyblue; /* Цвет активной ссылки */
+}
+</style>
+
+<div class="mydiv">
+<div class="mecontainer clearfix">
+    <div class="people-list" id="people-list">
+      <div class="search">
+        <input type="text" placeholder="search" />
+        <i class="fa fa-search"></i>
+      </div>
+      <ul class="list">
+        {% if chats %}
+        {% for chat in chats %}
+        <a href="" chat_id="{{ chat.chat_id }}">
+        <li class="clearfix">
+          <img  style="width: 50px; height: 50px; border-radius: 12px;" src="static/chat.jpg" alt="avatar" />
+          <div class="about">
+            <div class="name">{{chat.name}}</div>
+            <div class="status">
+              <i class="fa fa-circle online"></i> online
+            </div>
+          </div>
+        </li>
+        </a>
+        {% endfor %}
+        {% endif %}
+
+        <!--fa fa-circle offline -->
+        
+        
+      </ul>
+    </div>
+    
+    <div class="chat">
+       <h1 style="padding: 30px; text-align: center; line-height: 850px;"><span>Pls open chat</span></h1>
+       
+
+      
+    </div> <!-- end chat -->
+    
+  </div> <!-- end container -->
+
+</div>
+<script src="/static/js/chat.js"></script>
+{% endblock %}

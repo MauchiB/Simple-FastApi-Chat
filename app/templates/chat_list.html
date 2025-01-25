@@ -1,0 +1,67 @@
+{% extends  'index.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/chat_list.css">
+<div class="list-body">
+<strong>Global chat list</strong>
+
+<ol class="alternating-colors">
+{% for chat in chats %}
+
+  <a href="" chat-list="{{ chat.chat_id }}">
+      <li>
+        <strong>{{ chat.name }}</strong>
+        <p>{{ chat.description }}</p>
+        <p>{{ chat.created_at }}</p>
+      </li>
+  </a>
+  {% endfor %}
+</ol>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const a = document.querySelectorAll('a[chat-list]')
+        a.forEach(tag => {
+            tag.addEventListener('click', click => {
+                click.preventDefault()
+                password = prompt("Введите пароль")
+                const curr = click.currentTarget
+                const id = curr.getAttribute('chat-list')
+                console.log(id)
+                pass = JSON.stringify({
+                        'chat_id':id,
+                        'password':password
+                })
+
+                fetch(`/chat/chat-password`, {
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    method: 'POST',
+                    body: pass
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    } 
+                    else {
+                        throw new Error('Incorrect password')
+                    }
+                })
+                .then(data => {
+                    if ('ok' in data) {
+                        console.log(data)
+                        window.location.href = '/chat'
+                        alert('You in chat')
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert('error ' + error)
+                })
+            })
+        })
+    })
+</script>
+{% endblock %}

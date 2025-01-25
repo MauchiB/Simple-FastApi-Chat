@@ -1,0 +1,55 @@
+
+    <div class="chat-header clearfix">
+      <img style="width: 50px; height: 50px; border-radius: 12px;" src="static/chat.jpg" alt="avatar" />
+      <a class="button touch delete" style="margin-left: 16em;" id="delete-id"></a>
+      
+      <div class="chat-about">
+        <div class="chat-with">{{name}}</div>
+        <div class="chat-num-messages">{{count}}</div>
+      </div>
+      <i class="fa fa-star"></i>
+    </div> <!-- end chat-header -->
+    
+    <div class="chat-history">
+      <ul id="chat_id" chat_id="{{chat_id}}" username="{{username}}">
+        {% for message in messages %}
+        {% if message.you %}
+        <li class="clearfix">
+          <div class="message-data align-right">
+            <span class="message-data-time" >{{message.created_at}}</span> &nbsp; &nbsp;
+            <span class="message-data-name" >{{message.username}}</span> <i class="fa fa-circle me"></i>
+            
+          </div>
+          <div class="message other-message float-right">
+            {{message.message}}
+          </div>
+        </li>
+        {% else %}
+        
+        <li>
+          <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle online"></i>{{message.username}}</span>
+            <span class="message-data-time">{{message.created_at}}</span>
+          </div>
+          <div class="message my-message">
+            {{message.message}}
+          </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+        
+        
+      </ul>
+      
+    </div> <!-- end chat-history -->
+    
+    <div class="chat-message clearfix">
+      <textarea name="message-to-send" id="message-to-send" placeholder ="Send message in WebSocket ^()" rows="3" required></textarea>
+              
+      <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+      <i class="fa fa-file-image-o"></i>
+      
+      <button id="button-id">Send</button>
+
+    </div> <!-- end chat-message -->
+    

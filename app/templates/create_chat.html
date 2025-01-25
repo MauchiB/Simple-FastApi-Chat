@@ -1,0 +1,61 @@
+{% extends  'index.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/create_chat.css">
+<div class="login-box">
+    <h2>Create chat</h2>
+    <form id="form-id">
+      <div class="user-box">
+        <input type="text" name="" required="" id="user-id">
+        <label>Title</label>
+      </div>
+      <div class="user-box" style="border-radius: 12px;">
+     
+        <textarea id="text-id" style="height: 70px; width: 320px; resize: none; background-color: black; color: white; border-radius: 12px; " type="text" name="" required="" maxlength="100" placeholder="Description"></textarea>
+
+      </div>
+      <div class="user-box">
+        <input type="password" name="" required="" id="password-id">
+        <label>Password</label>
+      </div>
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', event => {
+        const name = document.getElementById('user-id')
+        const description = document.getElementById('text-id')
+        const password = document.getElementById('password-id')
+        const form = document.getElementById('form-id')
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+            event.preventDefault()
+            const body2 = JSON.stringify({
+                'name':name.value,
+                'description':description.value,
+                'password':password.value
+            })
+
+            const query = fetch('/chat/chat-create', {
+                body:body2,
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('You can create chat')
+                    window.location.href = '/chat'
+                }
+            })
+            .catch(error => {
+                alert(error)
+            })
+        }
+
+            })
+        
+    })
+
+  </script>
+{% endblock %}
