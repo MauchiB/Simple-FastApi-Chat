@@ -62,13 +62,22 @@ def run_migrations_online() -> None:
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
-
+    
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    from sqlalchemy import create_engine
+    from dotenv import load_dotenv
+    load_dotenv()
+    import os
+    connectable = config.attributes.get("connection", None)
+    if connectable is None:
+        PASSWORD = os.getenv('POSTGRES_PASSWORD')
+        DB = os.getenv('POSTGRES_DB')
+        USER = os.getenv('POSTGRES_USER')
+        HOST = os.getenv('POSTGRES_HOST')
+        PORT = os.getenv('POSTGRES_PORT', '5432')
+
+        SQLALCHEMY_URL = f'postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB}'
+        connectable = create_engine(SQLALCHEMY_URL)
 
     with connectable.connect() as connection:
         context.configure(

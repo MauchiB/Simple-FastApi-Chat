@@ -1,14 +1,20 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, Response
 from fastapi.responses import HTMLResponse
+from fastapi.responses import JSONResponse
 from sqlalchemy import desc
+from pydantic import BaseModel
 from app.views import templates
 from typing import Annotated
+from typing import List
 from app.dependencies import get_db, get_current_user, is_auth
 from app.services.chat_services import chat_list
 from app.models.chat import Chat
 from app.schemas.chat_schemas import ChatGlobalList
 
 index_template = APIRouter(prefix='', tags=['responseHTML'])
+
+
+
 
 
 @index_template.get('/', response_class=HTMLResponse)

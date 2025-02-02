@@ -69,8 +69,7 @@ document.addEventListener('DOMContentLoaded', event => {
       console.log('WebSocket closed');
     }
     scroll()
-
-    socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${id}`)
+    socket = new WebSocket(`ws://localhost:8000/ws/chat/${id}`)
     socket.onopen = event => {
       console.log('connect WS')
     }

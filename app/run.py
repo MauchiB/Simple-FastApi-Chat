@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from .api.auth import auth_router
 from .api.post import post_router
 from .api.chat import chat_router
 from app.views.index import index_template
 import os
 from app.websockets import chat_router_ws
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 app = FastAPI(debug=True,
               title='WebSocketFastApi',
@@ -14,6 +15,9 @@ app = FastAPI(debug=True,
                   'name':'Machi',
                   'email':'machibuweb@gmail.com'
               })
+
+
+              
 app.include_router(auth_router)
 app.include_router(post_router)
 app.include_router(index_template)

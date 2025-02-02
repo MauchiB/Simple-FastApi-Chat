@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from app.dependencies import get_current_user, get_db, join_in_chat
 from typing import Annotated, List
 from sqlalchemy.orm import Session
@@ -17,11 +17,14 @@ def chat(chat_id,
     if not chat:
         raise HTTPException(status_code=404, detail={'error':'not found'})
     chat_html = templates.get_template('chatInner.html')
+    import os, dotenv
+    dotenv.load_dotenv()
     html = chat_html.render(messages=chat['messages'],
                             count=chat['count'],
                             name=chat['chat_name'],
                             chat_id=chat['chat_id'],
-                            username=chat['username'])
+                            username=chat['username'],
+                            host=os.getenv('host'))
     return {'chat':html}
 
 
@@ -45,7 +48,7 @@ def create_chat_for_user(chat: ChatCreate,
                          user: Annotated[get_current_user, Depends()]):
     chat = create_chat(chat=chat, db=db, user=user)
     if chat:
-        return None
+        return Response(status_code=201)
     return HTTPException(status_code=409, detail={'error':'You can create chat 5 time'})
 
 @chat_router.post('/logout-chat/{id}', summary='logout from chat', description='Receives an ID chat from a link, and if the user in the chat deletes it from the chat, if the chat is empty, it is also deleted.')

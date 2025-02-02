@@ -4,8 +4,6 @@ from .config import Base
 import datetime
 
 
- 
-
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, autoincrement=True, primary_key=True)

@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.services.websocket_services import create_message, get_ws_chat
 from app.schemas.websocket_schemas import WSout
 
+
 chat_router_ws = APIRouter(prefix='/ws/chat', tags=['WebSocket'])
 
 
@@ -14,18 +15,18 @@ class SocketChat:
 
     async def connect(self, websocket: WebSocket, chat_id):
         await websocket.accept()
-        if chat_id not in self.socket:
+        if not chat_id in self.socket:
             self.socket[chat_id] = []
             self.socket[chat_id].append(websocket)
         else:
             self.socket[chat_id].append(websocket)
     
     async def disconnect(self, websocket: WebSocket, chat_id):
-        if self.socket[chat_id]:
+        if chat_id in self.socket:
             self.socket[chat_id].remove(websocket)
         if not self.socket[chat_id]:
             del self.socket[chat_id]
-            
+
     
     async def send_message(self, message: WSout, chat_id):
         if chat_id in self.socket:
@@ -56,4 +57,5 @@ async def first(chat_id,
             else:
                 await socket.disconnect(websocket=websocket, chat_id=chat_id)
     except WebSocketDisconnect:
+        print(f'user {user} is disc')
         await socket.disconnect(websocket=websocket, chat_id=chat_id)
